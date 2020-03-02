@@ -1,6 +1,7 @@
 using System;
 using Xunit;
 using FluentAssertions;
+using System.Linq.Expressions;
 
 namespace CustomAutomapper.Test
 {
@@ -9,6 +10,9 @@ namespace CustomAutomapper.Test
         [Fact]
         public void Mapper_should_map_the_values_correctly()
         {
+            //Expression<Action> x = () => new DemoMapperTest();
+            //NewExpression s = (NewExpression)x.Body;
+
             var mapFrom = new SampleMapFrom { ID = 1, Name = "Test Name" };
             var mapTo = new SampleMapTo();
 
@@ -28,18 +32,27 @@ namespace CustomAutomapper.Test
 
             return mapTo;
         }
+    }
 
-        public SampleMapTo Map(SampleMapFrom mapFrom)
+    public static class MapperExtensions
+    {
+        public static TMapTo Map<TMapFrom, TMapTo>(this IMapper<TMapFrom, TMapTo> mapper, TMapFrom mapFrom)
+            where TMapTo : new()
         {
             _ = mapFrom ?? throw new ArgumentNullException(nameof(mapFrom));
 
-            var mapTo = new SampleMapTo()
-            {
+            var mapTo = FactoryHelper<TMapTo>.Instance;
 
-            };
-
-            return mapTo;
+            return mapper.Map(mapFrom, mapTo);
         }
+    }
+
+    public static class FactoryHelper<TInstance>
+    {
+        private static readonly Func<TInstance> createInstanceFunc =
+            Expression.Lambda<Func<TInstance>>(Expression.New(typeof(TInstance))).Compile();
+
+        public static TInstance Instance => createInstanceFunc();
     }
 
     public class SampleMapFrom

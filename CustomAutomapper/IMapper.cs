@@ -5,6 +5,5 @@ namespace CustomAutomapper
     public interface IMapper<TMapFrom, TMapTo>
     {
         TMapTo Map(TMapFrom mapFrom, TMapTo mapTo);
-        TMapTo Map(TMapFrom mapFrom);
     }
 }
