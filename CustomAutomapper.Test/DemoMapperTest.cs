@@ -1,7 +1,5 @@
-using System;
 using Xunit;
 using FluentAssertions;
-using System.Linq.Expressions;
 
 namespace CustomAutomapper.Test
 {
@@ -13,58 +11,64 @@ namespace CustomAutomapper.Test
             //Expression<Action> x = () => new DemoMapperTest();
             //NewExpression s = (NewExpression)x.Body;
 
-            var mapFrom = new SampleMapFrom { ID = 1, Name = "Test Name" };
+            var mapFrom = new SampleMapFrom { Id = 1, Name = "Test Name" };
             var mapTo = new SampleMapTo();
 
             var mapedResult = new DemoMapper().Map(mapFrom, mapTo);
 
-            mapedResult.MapedID.Should().Be(mapFrom.ID);
+            mapedResult.MapedID.Should().Be(mapFrom.Id);
             mapedResult.MapedName.Should().Be(mapFrom.Name);
         }
+
+        [Fact]
+        public void Mapper_should_work_without_supplying_mapto_object()
+        {
+            var mapFrom = new SampleMapFrom { Id = 1, Name = "Name" };
+
+            IMapper<SampleMapFrom, SampleMapTo> mapper = new DemoMapper();
+
+            var mapResult = mapper.Map(mapFrom);
+
+            mapResult.Should().NotBeNull();
+            mapResult.MapedName.Should().Be(mapFrom.Name);
+            mapResult.MapedID.Should().Be(mapFrom.Id);
+        }
+
+        [Fact]
+        public void Should_work_with_array()
+        {
+            var mapFromArray = new SampleMapFrom[] {
+                new SampleMapFrom{Id=1,Name="Name1"},
+                new SampleMapFrom{Id=2,Name="Name2"},
+            };
+
+            IMapper<SampleMapFrom, SampleMapTo> mapper = new DemoMapper();
+
+            var mapResult = mapper.Map(mapFromArray);
+        }
     }
+
+
 
     public class DemoMapper : IMapper<SampleMapFrom, SampleMapTo>
     {
         public SampleMapTo Map(SampleMapFrom mapFrom, SampleMapTo mapTo)
         {
-            mapTo.MapedID = mapFrom.ID;
+            mapTo.MapedID = mapFrom.Id;
             mapTo.MapedName = mapFrom.Name;
 
             return mapTo;
         }
     }
 
-    public static class MapperExtensions
-    {
-        public static TMapTo Map<TMapFrom, TMapTo>(this IMapper<TMapFrom, TMapTo> mapper, TMapFrom mapFrom)
-            where TMapTo : new()
-        {
-            _ = mapFrom ?? throw new ArgumentNullException(nameof(mapFrom));
-
-            var mapTo = FactoryHelper<TMapTo>.Instance;
-
-            return mapper.Map(mapFrom, mapTo);
-        }
-    }
-
-    public static class FactoryHelper<TInstance>
-    {
-        private static readonly Func<TInstance> createInstanceFunc =
-            Expression.Lambda<Func<TInstance>>(Expression.New(typeof(TInstance))).Compile();
-
-        public static TInstance Instance => createInstanceFunc();
-    }
-
     public class SampleMapFrom
     {
-        public int ID { get; set; }
-
+        public int Id { get; set; }
         public string Name { get; set; }
     }
     public class SampleMapTo
     {
         public int MapedID { get; set; }
-
         public string MapedName { get; set; }
     }
 }
