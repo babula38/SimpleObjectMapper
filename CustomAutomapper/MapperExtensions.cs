@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace CustomAutomapper
 {
-    public static class MapperExtensions
+    public static partial class MapperExtensions
     {
         public static TMapTo Map<TMapFrom, TMapTo>(this IMapper<TMapFrom, TMapTo> mapper,
                                                    TMapFrom mapFrom)
@@ -27,8 +27,6 @@ namespace CustomAutomapper
         {
             _ = mapFromCollection ?? throw new ArgumentNullException(nameof(mapFromCollection));
             _ = mapper ?? throw new ArgumentNullException(nameof(mapper));
-
-            var mapTo = FactoryHelper<IEnumerator<TMapFrom>>.Instance;
 
             var result = mapFromCollection.Select(fromElement => mapper.Map(fromElement));
 

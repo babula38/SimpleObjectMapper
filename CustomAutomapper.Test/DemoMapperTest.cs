@@ -1,5 +1,6 @@
 using Xunit;
 using FluentAssertions;
+using System.Linq;
 
 namespace CustomAutomapper.Test
 {
@@ -44,7 +45,10 @@ namespace CustomAutomapper.Test
 
             IMapper<SampleMapFrom, SampleMapTo> mapper = new DemoMapper();
 
-            var mapResult = mapper.Map(mapFromArray);
+            var mappedResult = mapper.Map(mapFromArray);
+            mappedResult.Should().NotBeEmpty()
+                    .And.HaveCount(mapFromArray.Count());
+            //TODO: Need to check how to comapre 2 different type collection in fluent assertation
         }
     }
 
