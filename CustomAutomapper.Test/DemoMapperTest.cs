@@ -1,6 +1,7 @@
 using Xunit;
 using FluentAssertions;
 using System.Linq;
+using System.Collections.Generic;
 
 namespace CustomAutomapper.Test
 {
@@ -50,29 +51,53 @@ namespace CustomAutomapper.Test
                     .And.HaveCount(mapFromArray.Count());
             //TODO: Need to check how to comapre 2 different type collection in fluent assertation
         }
-    }
 
-
-
-    public class DemoMapper : IMapper<SampleMapFrom, SampleMapTo>
-    {
-        public SampleMapTo Map(SampleMapFrom mapFrom, SampleMapTo mapTo)
+        [Fact]
+        public void Mapp_List_element()
         {
-            mapTo.MapedID = mapFrom.Id;
-            mapTo.MapedName = mapFrom.Name;
+            var mapList = new List<SampleMapFrom>
+            {
+                new SampleMapFrom{Id=1,Name="1Name"},
+                new SampleMapFrom{Id=2,Name="2Name"}
+            };
+            IMapper<SampleMapFrom, SampleMapTo> mapper = new DemoMapper();
 
-            return mapTo;
+            var mappedResult = mapper.Map(mapList);
+
+            mappedResult.Should().NotBeEmpty()
+                    .And.HaveCount(mapList.Count);
         }
     }
 
-    public class SampleMapFrom
+
+
+    public class MapperWithComplexChild : IMapper<SourceMapWithComplexChield, DestMapWithComplexChield>
+    {
+        public DestMapWithComplexChield Map(SourceMapWithComplexChield mapFrom, DestMapWithComplexChield mapTo)
+        {
+            
+        }
+    }
+
+    public class SourceMapWithComplexChield
     {
         public int Id { get; set; }
+        public SourceChield Child { get; set; }
+    }
+
+    public class DestMapWithComplexChield
+    {
+        public int IdMapped { get; set; }
+        public DestChield ChildMapped { get; set; }
+    }
+
+    public class SourceChield
+    {
         public string Name { get; set; }
     }
-    public class SampleMapTo
+
+    public class DestChield
     {
-        public int MapedID { get; set; }
-        public string MapedName { get; set; }
+        public string NameMapped { get; set; }
     }
 }

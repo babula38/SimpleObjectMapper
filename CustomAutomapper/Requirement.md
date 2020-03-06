@@ -4,10 +4,17 @@
 	A.ID=B.ID
 	A.Name=B.Name
 
--	Mapper should work with Arry & list element.
+-	(done)	Mapper should work with Arry & list element.
+	///code c#
+	A[] should be mapped to B[]
+
+-	(DONE)Mapper should work with Arry & list element.
 	///code c#
 	List<A> should be mapped to List<B>
 
+		--------------
+	----|Child element |----
+		--------------
 -	Mapper should work with complex chield elment.
 	Class A{
 		public B B{get;set;}
