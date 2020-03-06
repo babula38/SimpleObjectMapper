@@ -11,7 +11,9 @@ namespace CustomAutomapper
             where TMapTo : new()
             where TMapFrom : new()
         {
-            _ = mapFrom ?? throw new ArgumentNullException(nameof(mapFrom));
+            //_ = mapFrom ?? throw new ArgumentNullException(nameof(mapFrom));
+            if (mapFrom == null)
+                return default;
 
             var mapTo = FactoryHelper<TMapTo>.Instance;
 
