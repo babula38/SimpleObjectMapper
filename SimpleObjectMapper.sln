@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29820.132
 MinimumVisualStudioVersion = 15.0.26124.0
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CustomAutomapper", "CustomAutomapper\CustomAutomapper.csproj", "{0B878E51-B2D3-4A00-ADA1-125C500E97DD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SimpleObjectMapper", "CustomAutomapper\SimpleObjectMapper.csproj", "{0B878E51-B2D3-4A00-ADA1-125C500E97DD}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CustomAutomapper.Test", "CustomAutomapper.Test\CustomAutomapper.Test.csproj", "{E3E2ADAA-66A5-4699-B75A-D45EFEC557AD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SimpleObjectMapper.Test", "CustomAutomapper.Test\SimpleObjectMapper.Test.csproj", "{E3E2ADAA-66A5-4699-B75A-D45EFEC557AD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApplication1", "WebApplication1\WebApplication1.csproj", "{74F5B5A5-1699-4B6A-987B-673C92299C23}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebApplication1", "WebApplication1\WebApplication1.csproj", "{74F5B5A5-1699-4B6A-987B-673C92299C23}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
