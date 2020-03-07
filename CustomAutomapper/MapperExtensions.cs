@@ -2,14 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace CustomAutomapper
+namespace SimpleObjectMapper
 {
     public static partial class MapperExtensions
     {
-        public static TMapTo Map<TMapFrom, TMapTo>(this IMapper<TMapFrom, TMapTo> mapper,
+        public static TMapTo? Map<TMapFrom, TMapTo>(this IMapper<TMapFrom, TMapTo> mapper,
                                                    TMapFrom mapFrom)
-            where TMapTo : new()
-            where TMapFrom : new()
+            where TMapTo : class
+            where TMapFrom : class
         {
             //_ = mapFrom ?? throw new ArgumentNullException(nameof(mapFrom));
             if (mapFrom == null)
@@ -20,17 +20,17 @@ namespace CustomAutomapper
             return mapper.Map(mapFrom, mapTo);
         }
 
-        public static IEnumerable<TMapTo> Map<TMapFrom, TMapTo>(
+        public static IEnumerable<TMapTo?>? Map<TMapFrom, TMapTo>(
             this IMapper<TMapFrom, TMapTo> mapper,
             IEnumerable<TMapFrom> mapFromCollection)
-            where TMapTo : new()
-            where TMapFrom : new()
+            where TMapTo : class
+            where TMapFrom : class
 
         {
-            _ = mapFromCollection ?? throw new ArgumentNullException(nameof(mapFromCollection));
+            //_ = mapFromCollection ?? throw new ArgumentNullException(nameof(mapFromCollection));
             _ = mapper ?? throw new ArgumentNullException(nameof(mapper));
 
-            var result = mapFromCollection.Select(fromElement => mapper.Map(fromElement));
+            var result = mapFromCollection?.Select(fromElement => mapper.Map(fromElement));
 
             return result;
         }

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq.Expressions;
 
-namespace CustomAutomapper
+namespace SimpleObjectMapper
 {
     public static class FactoryHelper<TInstance>
     {

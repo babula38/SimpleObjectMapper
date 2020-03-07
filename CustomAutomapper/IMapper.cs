@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace CustomAutomapper
+﻿namespace SimpleObjectMapper
 {
     public interface IMapper<TMapFrom, TMapTo>
     {

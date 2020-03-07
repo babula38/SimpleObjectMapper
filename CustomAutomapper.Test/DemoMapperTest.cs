@@ -1,9 +1,11 @@
-using Xunit;
+using CustomAutomapper.Test;
 using FluentAssertions;
-using System.Linq;
+using SimpleObjectMapper;
 using System.Collections.Generic;
+using System.Linq;
+using Xunit;
 
-namespace CustomAutomapper.Test
+namespace SimpleObjectMapper.Test
 {
     public class DemoMapperTest
     {
@@ -68,103 +70,6 @@ namespace CustomAutomapper.Test
                     .And.HaveCount(mapList.Count);
         }
 
-        [Fact]
-        public void Mapp_complex_child()
-        {
-            var source = new SourceMapWithComplexChield { Id = 1, Child = new SourceChield { Name = "1Child" } };
-
-            IMapper<SourceMapWithComplexChield, DestMapWithComplexChield> mapper = new MapperWithComplexChild();
-
-            var result = mapper.Map(source);
-
-            result.IdMapped.Should().Be(source.Id);
-            result.ChildMapped.NameMapped.Should().Be(source.Child.Name);
-        }
-
-        [Fact]
-        public void Mapped_Complex_chile_when_null()
-        {
-            var source = new SourceMapWithComplexChield { Id = 1 };
-
-            IMapper<SourceMapWithComplexChield, DestMapWithComplexChield> mapper = new MapperWithComplexChild();
-
-            var result = mapper.Map(source);
-
-            result.IdMapped.Should().Be(source.Id);
-            result.ChildMapped.Should().BeNull();
-        }
-
-        [Fact]
-        public void Mapped_Complex_chile_with_child_mapper_when_null()
-        {
-            var source = new SourceMapWithComplexChield { Id = 1 };
-
-            IMapper<SourceMapWithComplexChield, DestMapWithComplexChield> mapper = new MapperWithComplexChildWithChildMapper();
-
-            var result = mapper.Map(source);
-
-            result.IdMapped.Should().Be(source.Id);
-            result.ChildMapped.Should().BeNull();
-        }
     }
 
-
-
-    public class MapperWithComplexChild : IMapper<SourceMapWithComplexChield, DestMapWithComplexChield>
-    {
-        public DestMapWithComplexChield Map(SourceMapWithComplexChield mapFrom, DestMapWithComplexChield mapTo)
-        {
-            mapTo.IdMapped = mapFrom.Id;
-            mapTo.ChildMapped = mapFrom.Child == null ? null : new DestChield
-            {
-                NameMapped = mapFrom.Child?.Name
-            };
-
-            return mapTo;
-        }
-    }
-
-    public class MapperWithComplexChildWithChildMapper : IMapper<SourceMapWithComplexChield, DestMapWithComplexChield>
-    {
-        private readonly IMapper<SourceChield, DestChield> _childMapper = new ChildMapper();
-
-        public DestMapWithComplexChield Map(SourceMapWithComplexChield mapFrom, DestMapWithComplexChield mapTo)
-        {
-            mapTo.IdMapped = mapFrom.Id;
-            mapTo.ChildMapped =  _childMapper.Map(mapFrom.Child);
-
-            return mapTo;
-        }
-    }
-
-    public class ChildMapper : IMapper<SourceChield, DestChield>
-    {
-        public DestChield Map(SourceChield mapFrom, DestChield mapTo)
-        {
-            mapTo.NameMapped = mapFrom.Name;
-            return mapTo;
-        }
-    }
-
-    public class SourceMapWithComplexChield
-    {
-        public int Id { get; set; }
-        public SourceChield Child { get; set; }
-    }
-
-    public class DestMapWithComplexChield
-    {
-        public int IdMapped { get; set; }
-        public DestChield ChildMapped { get; set; }
-    }
-
-    public class SourceChield
-    {
-        public string Name { get; set; }
-    }
-
-    public class DestChield
-    {
-        public string NameMapped { get; set; }
-    }
 }

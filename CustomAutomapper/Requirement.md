@@ -15,11 +15,13 @@
 		--------------
 	----|Child element |----
 		--------------
--	Mapper should work with complex chield elment.
+-	[DONE]Mapper should work with complex chield elment.
 	Class A{
 		public B B{get;set;}
 	}
 	Class B{}
+
+	Note:- used both custom child mapper and manual property assign ment
 
 -	Work with child list & array element.
 	Class A{

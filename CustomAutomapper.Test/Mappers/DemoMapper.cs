@@ -1,4 +1,6 @@
-﻿namespace CustomAutomapper.Test
+﻿using SimpleObjectMapper;
+
+namespace CustomAutomapper.Test
 {
     public class DemoMapper : IMapper<SampleMapFrom, SampleMapTo>
     {
