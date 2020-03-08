@@ -6,7 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\CustomAutomapper\SimpleObjectMapper.csproj" />
+    <ProjectReference Include="..\SimpleObjectMapper\SimpleObjectMapper.csproj" />
   </ItemGroup>
 
 

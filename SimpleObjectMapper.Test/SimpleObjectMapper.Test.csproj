@@ -22,7 +22,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\CustomAutomapper\SimpleObjectMapper.csproj" />
+    <ProjectReference Include="..\SimpleObjectMapper\SimpleObjectMapper.csproj" />
     <ProjectReference Include="..\WebApplication1\WebApplication1.csproj" />
   </ItemGroup>
 
