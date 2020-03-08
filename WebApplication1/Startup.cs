@@ -19,8 +19,10 @@ namespace WebApplication1
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
-            //services.AddTransient<IMapper, TestClass>();
+            //services.AddTransient<IMapper<>, TestClass>();
             //services.AddTransient<IMapper, TestClass2>();
+            services.AddTransient(typeof(IGeneric<>), typeof(Class1));
+            services.AddTransient(typeof(IGeneric<>), typeof(Class2));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -61,4 +63,29 @@ namespace WebApplication1
     //        });
     //    }
     //}
+
+    public class SampleParam1 { }
+    public interface IGeneric<T>
+    {
+        void Process(T parameter);
+    }
+    public class Class1 : IGeneric<SampleParam1>
+    {
+        public void Process(SampleParam1 parameter)
+        {
+            throw new System.NotImplementedException();
+        }
+    }
+
+    public class Class2 : IGeneric<SampleParam2>
+    {
+        public void Process(SampleParam2 parameter)
+        {
+            throw new System.NotImplementedException();
+        }
+    }
+
+    public class SampleParam2
+    {
+    }
 }

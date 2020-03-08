@@ -16,16 +16,20 @@ namespace WebApplication1.Controllers
         };
 
         private readonly ILogger<WeatherForecastController> _logger;
+        private readonly IGeneric<Class1> class1;
+
         //private readonly IMapper _mapper;
 
-        public WeatherForecastController(ILogger<WeatherForecastController> logger)
+        public WeatherForecastController(ILogger<WeatherForecastController> logger, IGeneric<Class1> class1)
         {
             _logger = logger;
+            this.class1 = class1;
         }
 
         [HttpGet]
         public IEnumerable<WeatherForecast> Get()
         {
+            class1.Process(null);
             //var x = _mapper.Map<SampleMapFrom, SampleMapTo>(null, null);
             var rng = new Random();
             return Enumerable.Range(1, 5).Select(index => new WeatherForecast

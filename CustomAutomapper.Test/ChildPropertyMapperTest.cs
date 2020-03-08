@@ -68,7 +68,7 @@ namespace SimpleObjectMapper.Test
         }
 
         [Fact]
-        public void Complex_child_collection_wtith_child_object_map()
+        public void Complex_child_collection_with_child_object_map()
         {
             var source = new SourceMapWithComplexChield
             {
@@ -98,6 +98,7 @@ namespace SimpleObjectMapper.Test
                 NameMapped = mapFrom.Child?.Name
             };
 
+            //TODO: Refactor the below code it looks ugly
             mapTo.ChildListMap = mapFrom.ChildList == null ? null : mapFrom.ChildList
                                                                             .Select(x => new DestChield { NameMapped = x.Name })
                                                                             .ToList();
