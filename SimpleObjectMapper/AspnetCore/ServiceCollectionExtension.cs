@@ -18,12 +18,39 @@ namespace SimpleObjectMapper.AspnetCore
             //                    .Where(t => t.IsClass)
             //                    .Where(tt => tt.GetInterface(typeof(IMapper<,>).Name) != null);
 
-            var typ = assembly.GetTypes()
-                                .Where(t => t.IsClass)
-                                .Where(t => t.GetInterfaces()
-                                                .Any(t => t.IsGenericType
-                                                            && t.GetGenericTypeDefinition() == typeof(IMapper<,>))
-                                );
+            assembly.GetTypes()
+                    .Where(t => t.IsClass)
+                    .Where(t => t.GetInterfaces()
+                                    .Any(t => t.IsGenericType
+                                                && t.GetGenericTypeDefinition() == typeof(IMapper<,>)))
+                    .ToList()
+                         .ForEach(assignedTypes =>
+                         {
+                             var serviceType = assignedTypes.GetInterfaces()
+                                                            .First(i => i.GetGenericTypeDefinition() == typeof(IMapper<,>));
+                             services.AddTransient(serviceType, assignedTypes);
+                         });
+
+            //foreach (var item in typ)
+            //{
+            //    services.AddTransient(typeof(IMapper<,>), item);
+            //}
+
+            //System.Reflection.Assembly.GetExecutingAssembly()
+            //                         .GetTypes()
+            //                         .Where(t => t.IsClass)
+            //                         .Where(item => item.GetInterfaces()
+            //                         .Where(i => i.IsGenericType)
+            //                                    .Any(i => i.GetGenericTypeDefinition() == typeof(IMapper<,>))
+            //                                                        && !item.IsAbstract && !item.IsInterface)
+            //                         .ToList()
+            //                         .ForEach(assignedTypes =>
+            //                         {
+            //                             var serviceType = assignedTypes.GetInterfaces()
+            //                                                            .First(i => i.GetGenericTypeDefinition() == typeof(IMapper<,>));
+            //                             services.AddTransient(serviceType, assignedTypes);
+            //                         });
+
 
             return services;
         }

@@ -23,10 +23,10 @@
 
 	Note:- used both custom child mapper and manual property assign ment
 
--	Work with child list & array element.
+-	[Done]Work with child list & array element.
 	Class A{
 		public List<B> BList{get;set;}
 	}
 	Class B{}
-
+	Note:- used both custom child mapper and manual property assign ment
 -	

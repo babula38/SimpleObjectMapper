@@ -24,60 +24,78 @@ namespace SimpleObjectMapper.Test.AspnetCore
         }
 
         [Fact]
-        public void Close_genericText()
+        public void Close_generic_with_singlton()
         {
 
             var services = new ServiceCollection();
 
-            var class1Instance = new Class1();
+            var class1SingleInstance = new Class1();
             var class2SingleInstance = new Class2();
 
-            services.AddSingleton<IGeneric<SampleParam1>>(class1Instance);
+            services.AddSingleton<IGeneric<SampleParam1>>(class1SingleInstance);
             services.AddSingleton<IGeneric<SampleParam2>>(class2SingleInstance);
-            services.AddTransient(typeof(IGeneric<SampleParam2>), typeof(Class2));
             //services.AddSingleton<IGeneric<SampleParam2>>(x => x.GetRequiredService<Class2>());
 
             var provider = services.BuildServiceProvider();
 
 
-            var class1 = provider.GetService<IGeneric<SampleParam1>>(); // An instance of Foo
-            var class2 = provider.GetService<IGeneric<SampleParam2>>(); // An instance of Foo
+            var class1 = provider.GetService<IGeneric<SampleParam1>>();
+            var class2 = provider.GetService<IGeneric<SampleParam2>>();
 
-            var class2Transit = provider.GetService<IGeneric<SampleParam2>>(); // An instance of Foo
-
-            class1.Should().BeSameAs(class1Instance);
+            class1.Should().BeSameAs(class1SingleInstance);
             class2.Should().BeSameAs(class2SingleInstance);
 
             class2.Should().BeSameAs(class2SingleInstance);
         }
 
         [Fact]
-        public void Close_genericText1()
+        public void Close_generic_transient_return_new_object()
         {
 
             var services = new ServiceCollection();
 
-            var class1Instance = new Class1();
-            var class2SingleInstance = new Class2();
-
-            //services.AddSingleton<IGeneric<SampleParam1>>(class1Instance);
-            //services.AddSingleton<IGeneric<SampleParam2>>(class2SingleInstance);
-            services.AddTransient(typeof(Class2).GetInterfaces()[0], typeof(Class2));
-            services.AddTransient(typeof(Class1).GetInterfaces()[0], typeof(Class1));
-            //services.AddSingleton<IGeneric<SampleParam2>>(x => x.GetRequiredService<Class2>());
+            services.AddTransient(typeof(IGeneric<SampleParam1>), typeof(Class1));
+            services.AddTransient(typeof(IGeneric<SampleParam2>), typeof(Class2));
 
             var provider = services.BuildServiceProvider();
 
+            var class1 = provider.GetService<IGeneric<SampleParam1>>();
+            var class2 = provider.GetService<IGeneric<SampleParam2>>();
+            var class2Other = provider.GetService<IGeneric<SampleParam2>>();
 
-            var class1 = provider.GetService<IGeneric<SampleParam1>>(); // An instance of Foo
-            var class2 = provider.GetService<IGeneric<SampleParam2>>(); // An instance of Foo
+            class1.Should().NotBeNull();
 
-            var class2Transit = provider.GetService<IGeneric<SampleParam2>>(); // An instance of Foo
+            class2.Should().NotBeNull();
+            class2.GetHashCode().Should().NotBe(class2Other.GetHashCode());
+        }
 
-            class1.Should().BeSameAs(class1Instance);
-            class2.Should().BeSameAs(class2SingleInstance);
+        [Fact]
+        public void Close_generic_transient_return_new_with_reflection_to_register_object()
+        {
 
-            class2.Should().BeSameAs(class2SingleInstance);
+            var services = new ServiceCollection();
+            var interafceDefination1 = typeof(Class1).GetInterfaces()[0];
+            var interafceDefination2 = typeof(Class2).GetInterfaces()[0];
+
+            //var interafceDefination3 = typeof(Class2).GetInterfaces()[0].GetGenericTypeDefinition().GetGenericArguments()[0];
+            //var inter4 = interafceDefination1.MakeGenericType(interafceDefination3);
+
+            services.AddTransient(interafceDefination1, typeof(Class1));
+            services.AddTransient(interafceDefination2, typeof(Class2));
+
+            var provider = services.BuildServiceProvider();
+
+            var class1 = provider.GetService<IGeneric<SampleParam1>>();
+            var class1Other = provider.GetService<IGeneric<SampleParam1>>();
+
+            var class2 = provider.GetService<IGeneric<SampleParam2>>();
+            var class2Other = provider.GetService<IGeneric<SampleParam2>>();
+
+            class1.Should().NotBeNull();
+            class1.GetHashCode().Should().NotBe(class1Other.GetHashCode());
+
+            class2.Should().NotBeNull();
+            class2.GetHashCode().Should().NotBe(class2Other.GetHashCode());
         }
     }
 }
