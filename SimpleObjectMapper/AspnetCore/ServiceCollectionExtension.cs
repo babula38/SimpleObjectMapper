@@ -24,11 +24,11 @@ namespace SimpleObjectMapper.AspnetCore
                                     .Any(t => t.IsGenericType
                                                 && t.GetGenericTypeDefinition() == typeof(IMapper<,>)))
                     .ToList()
-                         .ForEach(assignedTypes =>
+                         .ForEach(implementationType =>
                          {
-                             var serviceType = assignedTypes.GetInterfaces()
+                             var serviceType = implementationType.GetInterfaces()
                                                             .First(i => i.GetGenericTypeDefinition() == typeof(IMapper<,>));
-                             services.AddTransient(serviceType, assignedTypes);
+                             services.AddTransient(serviceType, implementationType);
                          });
 
             //foreach (var item in typ)

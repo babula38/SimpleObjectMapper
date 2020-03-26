@@ -7,11 +7,12 @@ using System.Threading.Tasks;
 
 namespace WebApplication1.Mappers
 {
-    public class DemoMapper : IMapper<SampleDTO, SampleDomainClass>
+    public class SampleMapper : IMapper<SampleDTO, SampleDomainClass>
     {
         public SampleDomainClass Map(SampleDTO mapFrom, SampleDomainClass mapTo)
         {
             mapTo.IdMapped = mapFrom.Id;
+            mapTo.NamedMapped = mapFrom.Name;
 
             return mapTo;
         }
@@ -20,10 +21,12 @@ namespace WebApplication1.Mappers
     public class SampleDTO
     {
         public string Id { get; set; }
+        public string Name { get; set; }
     }
 
     public class SampleDomainClass
     {
         public string IdMapped { get; set; }
+        public string NamedMapped { get; set; }
     }
 }

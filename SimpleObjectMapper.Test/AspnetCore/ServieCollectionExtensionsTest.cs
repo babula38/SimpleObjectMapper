@@ -85,14 +85,15 @@ namespace SimpleObjectMapper.Test.AspnetCore
 
             var provider = services.BuildServiceProvider();
 
-            var class1 = provider.GetService<IGeneric<SampleParam1>>();
-            var class1Other = provider.GetService<IGeneric<SampleParam1>>();
+            var sampleParamclass1 = provider.GetService<IGeneric<SampleParam1>>();
+            var sampleParam1Other = provider.GetService<IGeneric<SampleParam1>>();
 
             var class2 = provider.GetService<IGeneric<SampleParam2>>();
             var class2Other = provider.GetService<IGeneric<SampleParam2>>();
 
-            class1.Should().NotBeNull();
-            class1.GetHashCode().Should().NotBe(class1Other.GetHashCode());
+            sampleParamclass1.Should().NotBeNull();
+            sampleParamclass1.GetHashCode().Should().NotBe(sampleParam1Other.GetHashCode());
+            sampleParamclass1.GetType().Should().Be<SampleParam1>();
 
             class2.Should().NotBeNull();
             class2.GetHashCode().Should().NotBe(class2Other.GetHashCode());
